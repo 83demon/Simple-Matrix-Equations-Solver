@@ -3,23 +3,35 @@ import numpy as np
 
 class Solver:
 
-    def __init__(self, matrix, vector_column, nu: list, truncate_val=1e10-8):
+    def __init__(self, matrix, vector_column, nu: list = None, truncate_val=1e10-8):
         self.m = matrix.shape[0]  # height
         self.n = matrix.shape[1]  # width
         self.A = matrix
         self.b = vector_column
-        self.nu_values = nu
-        self.solution = {nu: np.zeros((self.n, 1)) for nu in self.nu_values}  # dict of vector x for every nu
+        self._nu_set_length = 5
+        self._nu_low = -10
+        self._nu_high = 10
+        if nu is None:
+            self.nu_values = []
+            self._init_nu()
+            self.solution = dict()
+        else:
+            self.nu_values = nu
+            self.solution = {nu: np.zeros((self.n, 1)) for nu in self.nu_values}  # dict of vector x for every nu
         self.A_inv = None  # pseudo inverse of self.matrix
         self.epsilon = 0  # accuracy
         self._has_invert = None
         self._unity_flag = None  # flag to indicate unity of the solution
         self._truncate_val = truncate_val
 
+    def _init_nu(self):
+        for _ in range(self._nu_set_length):
+            self.nu_values.append(tuple(np.random.randint(self._nu_low,self._nu_high,(1,self.n))[0]))
+
     def _translate_tuple_to_ndarray_n_transpore(self, key):
         """Translates from tuple of shape (1,m) to ndarray of shape (m,1)"""
         a = np.array(key)
-        a = a[:, np.newaxis]
+        a=a[:,np.newaxis]
         return a
 
     def _compute_inverse(self):

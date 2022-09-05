@@ -26,8 +26,8 @@ class GUI:
     def _first_run(self):
         self.window = sg.Window(self.title, self.layout)
         event, self._m_n = self.window.read()
-        self._m = self._m_n[0]
-        self._n = self._m_n[1]
+        self._m = int(self._m_n[0])
+        self._n = int(self._m_n[1])
         sg.popup(f'You entered: \nHeight: {self._m}\t Width: {self._n}')
         self.window.close()
 
@@ -55,10 +55,15 @@ class GUI:
 
     def _show_result(self, solution, epsilon, has_invert, unity_check):
         self.layout = [[sg.Text(self._result_text)]]
-        #self.layout.append([sg.Text(str([]))])
         for i in range(int(self._n)):
             temp = [sg.Text(size=self._input_box_size,text=f"{solution[key][i]}") for key in solution.keys()]
             self.layout.append(temp)
+
+        self.layout.append([sg.Text("")])
+        k=1
+        for v in solution.keys():
+            self.layout.append([sg.Text("v"+str(k)+": " + " ".join([str(v[i]) for i in range(self._m)]))])
+            k+=1
         self.layout.append([sg.CloseButton("Okay")])
         self.window = sg.Window(self.title, self.layout)
         event = self.window.read()

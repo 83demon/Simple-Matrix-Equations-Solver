@@ -19,7 +19,7 @@ class GUI:
         self._m_n = None
         self._m = None
         self._n = None
-        self._input_box_size = (4,1)
+        self._input_box_size = (6,1)
         self._default_value = '0'
         self.handler()
 

@@ -3,7 +3,7 @@ import numpy as np
 
 class Solver:
 
-    def __init__(self, matrix, vector_column, nu: list = None, truncate_val=1e10-8):
+    def __init__(self, matrix, vector_column, nu: list = None):
         self.m = matrix.shape[0]  # height
         self.n = matrix.shape[1]  # width
         self.A = matrix
@@ -22,7 +22,7 @@ class Solver:
         self.epsilon = 0  # accuracy
         self._has_invert = None
         self._unity_flag = None  # flag to indicate unity of the solution
-        self._truncate_val = truncate_val
+        self.ndigits=3
 
     def _init_nu(self):
         for _ in range(self._nu_set_length):
@@ -57,10 +57,10 @@ class Solver:
             nu_val = self._translate_tuple_to_ndarray_n_transpore(nu)
 
             matrix_product = self.A_inv @ self.A
-            matrix_product[np.isclose(matrix_product, 0, atol=self._truncate_val)] = 0
+            matrix_product[np.isclose(matrix_product, 0)] = 0
             temp = nu_val - matrix_product @ nu_val
-            temp[np.isclose(temp, 0, atol=self._truncate_val)] = 0
-            self.solution[nu] = self.A_inv @ self.b + temp
+            temp[np.isclose(temp, 0)] = 0
+            self.solution[nu] = np.round(self.A_inv @ self.b + temp,decimals=self.ndigits)
 
     def main(self):
         self._has_invert = self._check_for_inverse()

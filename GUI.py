@@ -64,6 +64,7 @@ class GUI:
         for v in solution.keys():
             self.layout.append([sg.Text("v"+str(k)+": " + " ".join([str(v[i]) for i in range(self._m)]))])
             k+=1
+        self.layout.append([sg.Text(f"Epsilon: {epsilon[0][0]}")])
         self.layout.append([sg.CloseButton("Okay")])
         self.window = sg.Window(self.title, self.layout)
         event = self.window.read()
@@ -85,6 +86,6 @@ class GUI:
 
 
 
-gui = GUI()
+
 
 

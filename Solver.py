@@ -19,7 +19,7 @@ class Solver:
             self.nu_values = nu
             self.solution = {nu: np.zeros((self.n, 1)) for nu in self.nu_values}  # dict of vector x for every nu
         self.A_inv = None  # pseudo inverse of self.matrix
-        self.epsilon = 0  # accuracy
+        self.epsilon = np.array([[0]])  # accuracy
         self._has_invert = None
         self._unity_flag = None  # flag to indicate unity of the solution
         self.ndigits=3
@@ -57,9 +57,9 @@ class Solver:
             nu_val = self._translate_tuple_to_ndarray_n_transpore(nu)
 
             matrix_product = self.A_inv @ self.A
-            matrix_product[np.isclose(matrix_product, 0)] = 0
+            #matrix_product[np.isclose(matrix_product, 0)] = 0
             temp = nu_val - matrix_product @ nu_val
-            temp[np.isclose(temp, 0)] = 0
+            #temp[np.isclose(temp, 0)] = 0
             self.solution[nu] = np.round(self.A_inv @ self.b + temp,decimals=self.ndigits)
 
     def main(self):

@@ -62,9 +62,10 @@ class GUI:
         self.layout.append([sg.Text("")])
         k=1
         for v in solution.keys():
-            self.layout.append([sg.Text("v"+str(k)+": " + " ".join([str(v[i]) for i in range(self._m)]))])
+            self.layout.append([sg.Text("v"+str(k)+": " + " ".join([str(v[i]) for i in range(self._n)]))])
             k+=1
         self.layout.append([sg.Text(f"Epsilon: {epsilon[0][0]}")])
+        self.layout.append([sg.Text(f"There is only one solution: {unity_check}")])
         self.layout.append([sg.CloseButton("Okay")])
         self.window = sg.Window(self.title, self.layout)
         event = self.window.read()

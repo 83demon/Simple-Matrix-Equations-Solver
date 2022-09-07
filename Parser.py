@@ -11,11 +11,11 @@ class Parser:
 
     def _parse_matrix(self):
         for i in range(self.m*self.n):
-            self.matrix[i//self.n,i%self.n] = int(self.raw_matrix[i])
+            self.matrix[i//self.n,i%self.n] = float(self.raw_matrix[i])
 
     def _parse_b_vector(self):
         for i in range(self.m):
-            self.b[i] = int(self.raw_b[i])
+            self.b[i] = float(self.raw_b[i])
 
     def main(self):
         self._parse_matrix()

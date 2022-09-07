@@ -139,15 +139,60 @@ class GUI:
 
     def handler(self):
         self._first_run()
-        self._construct_matrix_input()
-        self._construct_b_vector_input()
-        parser = Parser(self._m,self._n,self.raw_matrix,self.raw_b_vector)
-        solver = Solver(*parser.main())
-        solution, pinv_matrix, eps, has_invert, unity_check = solver.main()
-        self._show_result(solution, pinv_matrix, eps, has_invert, unity_check)
+        if 1<=self._n<=13 and 1<=self._m<=25:
+            self._construct_matrix_input()
+            self._construct_b_vector_input()
+            parser = Parser(self._m,self._n,self.raw_matrix,self.raw_b_vector)
+            solver = Solver(*parser.main())
+            solution, pinv_matrix, eps, has_invert, unity_check = solver.main()
+            self._show_result(solution, pinv_matrix, eps, has_invert, unity_check)
+        elif self._n<=0 or self._m <=0:
+            raise ValueError(f'Cannot construct matrix with shape {self._m,self._n}')
+
+        else:
+            console_input = read_from_console(self._m, self._n)
+            solver = Solver(*console_input)
+            solution, pinv_matrix, eps, has_invert, unity_check = solver.main()
+            console_output(solution, pinv_matrix, eps, has_invert, unity_check)
+            self._show_graphs(solution,unity_check)
 
 
 
+
+def read_from_console(m,n):
+    print(f"Enter a {(m,n)} matrix data separated by whitespace:\n")
+    matrix_data = []
+    for i in range(m):
+        temp = input().split(" ")
+        if temp[-1] == "":
+            temp.pop()
+        if len(temp)!=n:
+            raise ValueError(f"You entered {len(temp)} values")
+        matrix_data.append(temp)
+
+
+    print(f"Enter a {(m,1)} b vector data separated by whitespace:\n")
+    b = input().split(" ")
+    matrix = np.array(matrix_data,dtype=np.float32)
+    b_vector = np.array(b,dtype=np.float32)
+    b_vector = b_vector[:,np.newaxis]
+
+
+    return matrix, b_vector
+
+
+def console_output(solution, pinv_matrix, eps, has_invert, unity_check):
+    print("Your solution:\n")
+    for k,v in solution.items():
+        print(f"{k} :\n{v}")
+    print()
+    print("Pseudo inverted matrix is:\n")
+    for i in range(pinv_matrix.shape[0]):
+       print(f"{' '.join(str(pinv_matrix[i][j]) for j in range(pinv_matrix.shape[1]))}")
+    print()
+    print(f'Epsilon^2 is: {eps}')
+    print(f'There is only one solution: {unity_check}')
+    print()
 
 
 

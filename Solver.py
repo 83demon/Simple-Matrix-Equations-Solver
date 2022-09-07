@@ -68,4 +68,4 @@ class Solver:
         self._compute_inverse()
         self._calculate_accuracy()
         self._solve()
-        return self.solution, self.epsilon, self._has_invert, self._unity_flag
+        return self.solution, self.A_inv, self.epsilon, self._has_invert, self._unity_flag

@@ -46,7 +46,9 @@ class Solver:
 
     def _check_for_unity(self):
         """Checks a solution for unity"""
-        return np.linalg.det(self.A.T @ self.A) > 0
+        det = np.linalg.det(self.A.T @ self.A)
+        print(f"Determinant of A.T*A is: {det}")
+        return det > 0
 
     def _calculate_accuracy(self):
         if not self._has_invert:
